@@ -1,11 +1,11 @@
-public class Staff extends Person {
+public class Staff  {
     String specialization;
     int workingDays=5;
     double  workingHours;
     double salary;
 
     Staff(String Specialization ,String name){
-        super(name);
+        
         this.specialization=Specialization;
     }
 
