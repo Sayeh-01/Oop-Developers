@@ -3,14 +3,22 @@ import java.util.Scanner;
 
 public abstract class User {
     // Fields
-    protected String userId;
-    protected ArrayList<String> userName = new ArrayList<>();
+    private String userId;
+    private ArrayList<String> userName = new ArrayList<>();
     private ArrayList<String> password = new ArrayList<>();
-    protected String name;
-    protected String email;
-    protected String contactInfo;
+    private String name;
+    private String email;
+    private  String contactInfo;
     private static String currentUser = null;
-    protected int count;
+    protected static  int count;
+
+    public User(String contactInfo, String email, String name, String userId) {
+        this.contactInfo = contactInfo;
+        this.email = email;
+        this.name = name;
+        this.userId = userId;
+    }
+
 
     // Abstract methods
     public abstract boolean login();

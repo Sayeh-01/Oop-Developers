@@ -5,6 +5,13 @@ public class Student extends User {
    private String admissionDate;
    private String academicStatus;
    private ArrayList<CourseGrade> enrolledCourses = new ArrayList<>();
+
+    public Student(String academicStatus, String admissionDate, int studentID, String contactInfo, String email, String name, String userId) {
+        super(contactInfo, email, name, userId);
+        this.academicStatus = academicStatus;
+        this.admissionDate = admissionDate;
+        this.studentID = studentID;
+    }
     @Override
     public boolean login() {
         return false;
