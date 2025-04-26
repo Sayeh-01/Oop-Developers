@@ -1,16 +1,15 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public abstract class User {
     // Fields
     private String userId;
-    private ArrayList<String> userName = new ArrayList<>();
-    private ArrayList<String> password = new ArrayList<>();
+    private String userName;
+    private String password;
     private String name;
     private String email;
-    private  String contactInfo;
+    private String contactInfo;
     private static String currentUser = null;
-    protected static  int count;
+    protected static int count;
 
     public User(String contactInfo, String email, String name, String userId) {
         this.contactInfo = contactInfo;
@@ -80,17 +79,21 @@ public abstract class User {
     private void updateUsername(Scanner scanner) {
         System.out.print("Enter new username: ");
         String newUsername = scanner.nextLine().trim();
+        
+        // Check if username is empty
         if (newUsername.isEmpty()) {
             System.out.println("Username cannot be empty!");
             return;
         }
 
-        if (isUsernameTaken(newUsername)) {
-            System.out.println("Username already taken!");
+        // Check if username is the same as current username
+        if (newUsername.equals(currentUser)) {
+            System.out.println("This is already your current username!");
             return;
         }
 
-        userName.set(count, newUsername);
+        // Update the username
+        this.userName = newUsername;
         currentUser = newUsername;
         System.out.println("Username updated successfully!");
     }
@@ -98,12 +101,46 @@ public abstract class User {
     private void updatePassword(Scanner scanner) {
         System.out.print("Enter new password: ");
         String newPassword = scanner.nextLine().trim();
+        
         if (newPassword.isEmpty()) {
             System.out.println("Password cannot be empty!");
             return;
         }
-        password.set(count, newPassword);
+
+        if (!isValidPassword(newPassword)) {
+            System.out.println("Password must meet the following requirements:");
+            System.out.println("- At least 6 characters long");
+            System.out.println("- At least one capital letter");
+            System.out.println("- At least one number");
+            System.out.println("- At least one symbol");
+            return;
+        }
+
+        this.password = newPassword;
         System.out.println("Password updated successfully!");
+    }
+
+    private boolean isValidPassword(String password) {
+        // Check length first
+        if (password.length() < 6) {
+            return false;
+        }
+
+        boolean hasCapital = false;
+        boolean hasNumber = false;
+        boolean hasSymbol = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasCapital = true;
+            } else if (Character.isDigit(c)) {
+                hasNumber = true;
+            } else if (!Character.isLetterOrDigit(c)) {
+                hasSymbol = true;
+            }
+        }
+
+        return hasCapital && hasNumber && hasSymbol;
     }
 
     private void updateName(Scanner scanner) {
@@ -145,16 +182,11 @@ public abstract class User {
 
     // Validation methods
     private boolean isUsernameTaken(String username) {
-        for (String existingUsername : userName) {
-            if (existingUsername.equals(username)) {
-                return true;
-            }
-        }
-        return false;
+        return username.equals(userName);
     }
 
     private boolean isValidEmail(String email) {
-        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z.-]+\\.[A-Za-z]{2,6}$");
     }
 
     // Getters and Setters
@@ -166,19 +198,19 @@ public abstract class User {
         this.userId = userId;
     }
 
-    public ArrayList<String> getUserName() {
+    public String getUserName() {
         return userName;
     }
 
-    public void setUserName(ArrayList<String> userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public ArrayList<String> getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(ArrayList<String> password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -219,7 +251,7 @@ public abstract class User {
     }
 
     public void setCount(int count) {
-        this.count = count;
+        User.count = count;
     }
 }
 
